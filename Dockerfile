@@ -12,17 +12,8 @@ RUN SCALA=scala-2.13.1 && \
   echo "SCALA_HOME=${SCALA_HOME}" > /etc/profile.d/scala.sh && \
   echo "PATH=${PATH}:${SCALA_HOME}/bin" >> /etc/profile.d/scala.sh
 
-# RUN \
-#   MINICONDA=Miniconda3-latest-Linux-x86_64.sh && \
-#   curl https://repo.anaconda.com/miniconda/${MINICONDA} -OJ && \
-#   bash ${MINICONDA} -b -p /opt/miniconda && \
-#   /opt/miniconda/bin/conda init && \
-#   rm ${MINICONDA}
-
-# RUN /opt/miniconda/bin/conda install -y numpy matplotlib scipy scikit-learn
-
 RUN \
-  ANACONDA=Anaconda3-2020.02-Linux-x86_64.sh && \
+  ANACONDA=Anaconda3-2019.10-Linux-x86_64.sh && \
   curl https://repo.anaconda.com/archive/${ANACONDA} -OJ && \
   bash ${ANACONDA} -b -p /opt/anaconda && \
   /opt/anaconda/bin/conda init && \
@@ -40,12 +31,6 @@ RUN \
   echo "PATH=${PATH}:${SPARK_HOME}/bin" >> /etc/profile.d/spark.sh && \
   echo "PYSPARK_PYTHON=python3" >> /etc/profile.d/spark.sh && \
   echo "PYTHONPATH=${SPARK_HOME}/python:${PYTHONPATH}" >> /etc/profile.d/spark.sh
-
-# RUN \
-#   ZEP_VER=0.8.2 && \
-#   ZEP_PATH=zeppelin-${ZEP_VER}-bin-all && \
-#   curl http://apache.claz.org/zeppelin/zeppelin-${ZEP_VER}/${ZEP_PATH}.tgz -OJ && \
-#   tar -xvf ${ZEP_PATH}.tgz
 
 RUN /opt/anaconda/bin/conda install -y -c conda-forge findspark
 
@@ -66,8 +51,7 @@ RUN \
 
 RUN /opt/anaconda/bin/conda install -y pymongo
 
-RUN /opt/anaconda/bin/conda install -y -c conda-forge pydub
-RUN /opt/anaconda/bin/conda install -y ffmpeg
+RUN /opt/anaconda/bin/conda install -y -c conda-forge ffmpeg pydub
 
 RUN echo "jupyter notebook --ip 0.0.0.0 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' &" > launch_jupyter.sh && chmod 740 launch_jupyter.sh
 
@@ -85,10 +69,3 @@ RUN echo "#!/bin/bash" > run_everything.sh && \
 SHELL ["/bin/bash", "-c"]
 ENTRYPOINT [ "/bin/bash", "-c" ]
 CMD [ "source /opt/anaconda/bin/activate base && /run_everything.sh" ]
-
-#CMD /bin/bash run_everything.sh
-#RUN echo ./bin/pyspark --conf "spark.mongodb.input.uri=mongodb://127.0.0.1/test.myCollection?readPreference=primaryPreferred" \
-#              --conf "spark.mongodb.output.uri=mongodb://127.0.0.1/test.myCollection" \
-#              --packages org.mongodb.spark:mongo-spark-connector_2.11:2.4.1
-
-#ENTRYPOINT ./launch_jupyter.sh && ./launch_mongodb.sh && pyspark
