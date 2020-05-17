@@ -134,6 +134,6 @@ dmypy.json
 *.fls
 *.out
 *.synctex.gz
-*.tex
 *.toc
-
+*.bbl
+*.blg
