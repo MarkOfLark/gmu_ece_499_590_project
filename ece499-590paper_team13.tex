@@ -311,7 +311,6 @@ One issue is that quality of individual entries in a database can vary since no 
 Another challenge is that the meta data associated with particular data points can vary greatly based on the individual contributor's capacity to gather the data. This could be solved by careful curation of the submissions to ensure that each data point is properly labeled with metadata but this again reduces the benefits of crowd sourcing data collection.
 
 We found a particular example on Kaggle that highlights this issue and inspired this project. A user of the very large, user generated database of bird call recordings - Xeno Cano\cite{xenocanto} - uploaded a carefully curated subset of the Xeno Canto library to Kaggle so that it was ready for data science workflows\cite{xenocantokaggle}. This represents significant work that would have to duplicated in the future since the Xeno Canto database continues to grow as user's submit new recordings. The recordings are of many different lengths and have different levels of background noise, thus necessitating the cleanup step prior to use for data science.
-%%Jose
 
 In this paper we present an architecture that allows for crowd sourcing the curation efforts by caching cleaned up data points using a database based on flexible schema. This allows user's to perform the necessary data manipulation efforts and save the results for other's to use without requiring updating the source database's schema. We pair this cache with Apache Spark to allow for distributed processing of user's requests.
 
@@ -398,9 +397,25 @@ Microsoft Azure is a subscription based application that allows users to create 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Architecture}
-The previously mentioned technology stack is all the applications needed to complete the task at hand. Thankfully all the applications used were easily incorporated onto each other because of there design and layout. In this section we will explain how these application were incorporated into each other and how these applications collaborate together.
+The main purpose of caching previous results is to reduce the amount of repeated work. Similarly, we also want to reduce the amount of wasted network traffic. This is especially important if the source database and or end users are limited in their bandwidth. To do this we present and architecture that keeps the the cached data (using MongoDB) and the computation on that data using (using Spark) as close to each other as possible.
 
-Starting with the virtual machine that was created with the help of Microsoft Azure, allowed for the platform to be created and a base to begin using these other application. Secondly the Podman that are containers that allow these applications to be runned in the background . Also allows these applications to runned seamlessly, because all these application can be launched though a command prompt. Furthermore the database was created with MongoDB because MongoDB is a user-friendly application that works seamlessly with Apache Spark to cache and query to a very large database as needed. Next the Apache Spark is used because this allows the data to be manipulated because Apache Spark is a efficient way to process large data sets, and consequently allowing for greater manipulation of the data. Which is where Juypter Notebook comes in as both a text editor and compiler for all these applications as it supports them and is a user-friendly GUI. Finally Python, Numpy, and Matplotlib are libraries were these manipulations can be done with processes that are pre-built and user defined functions to manipulate the data.
+User's of the architecture can manipulate and cache results as necessary but keeping the data on the remote, cloud-based infrastructure until the very final step when they retrieve results for viewing on their local resources. To acomplish this it is necessary that only metadata be transfered to the user's local environment (as can be seen in Figure \ref{fig:tech}). The data itself which is assumed to be much larger than the metadata is only ever transferred from the source database into the remote cluster. This is beneficial if we assume that the network capacity between the source database and remote cluster is much higher than the network bandwidth available to the user's local environment.
+
+A typical transaction takes place as follows:
+\begin{enumerate}
+  \item{The user retrieves some metadata from the source database into their Jupyter Notebook according to the their desired parameters. The user has a direct connection to the MongoDB cache which allows them to determine if there are results already available that match the operation they wish to perform and the metadata they retrieved. The dynamic nature of MongoDB schema makes it a perfect technology for performing open ended queries and comparisons such as this.}
+  \item{Any results that could not be found in the cache represent new operations that need to be performed by Apache Spark. The user creates a processing request that includes the metadata associated with the data to be processed and the instructions for how to perform the processing. This processing request is sent to Apache Spark using a Spark DataFrame and a user defined function (UDF).}
+  \item{For each item of metadata Apache Spark retrieves the actual data from the source database and then runs the requested processing on that data using the UDF provided by the user. Each item is retrieved and processed in parallel.}\label{step:retrieve}
+  \item{Apache Spark saves the results of these computations into the MongoDB cache.}
+  \item{Now all items from the original query are available in the cache so the user may retrieve them into their local environment (an expensive operation) or they may run further operations on them by providing other UDFs to Apache Spark.}
+\end{enumerate}
+
+It is worth reiterating that step \ref{step:retrieve} is a huge savings in time since we have assumed that the network bandwidth between the user's environment and the source database is much less than the bandwidth between the Spark cluster and the source database. The ability to apply further processing steps also represents savings since the user does not need to retrieve results from the cluster into their local environment until the final step.
+
+All of the steps above are seamlessly integrated through the use of an OCI Container which bundles preconfigured installations of MongoDB, Apache Spark, Python, Jupyter Notebooks, and all supporting libraries. This container is deployed to a VM allocated using Microsoft Azure so that heavy processing and network bandwidth requirements can be spread across the cloud. Additionally the container may be run on local resources for testing and development purposes thus reducing the chance of configuration error when moving from a development environment to a production environment.
+
+The current implementation of our container does not support multi-node Spark and MongoDB clusters. However as that capability is built into Spark and MongoDB such an extension to this work would be supported.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -411,7 +426,7 @@ Starting with the virtual machine that was created with the help of Microsoft Az
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Use Case}
-The demonstrate and prove out the proposed architecture we developed an application\footnotemark to cache and query the massive, crowd sourced database of bird call recordings - \textit{xeno-canto}. Figure \ref{fig:flow} shows the logical flow of our test application. We will describe this flow in detail below.
+To demonstrate and prove out the proposed architecture we developed an application\footnotemark to cache and query the massive, crowd sourced database of bird call recordings - \textit{xeno-canto}. Figure \ref{fig:flow} shows the logical flow of our test application. We will describe this flow in detail below. We chose bandpass filtering as a demonstration of the kinds of operations that could be performed and cached in the database. The flexible schema of MongoDB allows for any kind of operation to be performed provided that the parameters of the operation are in a format that can be stored to a JSON document.
 \begin{figure}
   \centering
   \includegraphics[width=3.4in]{project_flow_chart}
