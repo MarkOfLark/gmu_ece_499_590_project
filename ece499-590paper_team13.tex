@@ -257,7 +257,7 @@ Email: jvelasq@gmu.edu}
 
 
 \begin{abstract}
-Online databases with user generated content are increasingly common. If the number of users of such a database is large then the amount of content can quickly grow to be very large. This means that it is impractical and expensive to allow users to access the database in its entirety. To work around this many sites provide feature-rich search and query APIs that allow users to download only the portions of the database that they require. After downloading the data the users then processes it using their local computing resources. A very common operation to be performed by users is to perform preprocessing and cleaning of the data since, due the distributed sources of the data, it is likely to be of varying quality. This represents duplication of work that could be captured back into the public database. We present an architecture based on Apache Spark for performing this cleanup near the source of the data. We also present the creation of a cache of cleaned data so that other users can benefit from the work and analysis already performed. We demonstrate its effectiveness using a real-world example: We perform spectral filtering of recordings from the Xeno Canto database of bird-songs and then cache the filtered results.
+Online databases with user generated content are increasingly common. If the number of users of such a database is large then the amount of content can quickly grow to be very large. This means that it is impractical and expensive to allow users to access the database in its entirety. To work around this many sites provide feature-rich search and query APIs that allow users to download only the portions of the database that they require. After downloading the data the users then process it using their local computing resources. A very common operation performed by users is preprocessing and cleaning of the data since, due the distributed sources of the data, it is likely to be of varying quality. This represents duplication of work that could be captured back into the public database. We present an architecture based on Apache Spark for performing this cleanup near the source of the data. We also present the creation of a cache of cleaned data so that other users can benefit from the work and analysis already performed. We demonstrate its effectiveness using a real-world example: We perform spectral filtering of recordings from the Xeno Canto database of bird-songs and then cache the filtered results.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -304,15 +304,15 @@ Online databases with user generated content are increasingly common. If the num
 %
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{O}{ne} very interesting development to come from the cloud computing and data science explosion is crowd sourced data bases. These databases can grow very large as the work it takes to curate the databases is distributed around the globe. This distributed nature presents some challenges though.
+\IEEEPARstart{O}{ne} very interesting development to come from the cloud computing and data science explosion is crowd sourced data bases. These databases can grow very large since the work it takes to curate the databases is distributed around the globe. This distributed nature presents some challenges.
 
-One issue is that quality of individual entries in a database can vary since no single source or curator was involved in generating the entries. Some data providers, such as Kaggle\cite{kaggle}, solve this by allowing users to rate the quality of datasets. However this approach, while it does provide useful information to potential users, does not do anything to improve quality. A dataset uploaded to a service such as Kaggle can only be updated by the user that uploaded it so improving the quality of a dataset after it is created can only be done by the original user. This reduces the benefits of distributed data curation.
+One issue is that the quality of individual entries in a database can vary since no single source or curator was involved in generating the entries. Some data providers, such as Kaggle\cite{kaggle}, solve this by allowing users to rate the quality of datasets. However this approach, while it does provide useful information to potential users, does not do anything to improve quality. A dataset uploaded to a service such as Kaggle can only be updated by the user that uploaded it so improving the quality of a dataset after it is created can only be done by the original user. This reduces the benefits of distributed data curation.
 
-Another challenge is that the meta data associated with particular data points can vary greatly based on the individual contributor's capacity to gather the data. This could be solved by careful curation of the submissions to ensure that each data point is properly labeled with metadata but this again reduces the benefits of crowd sourcing data collection.
+Another challenge is that the metadata associated with particular data points can vary greatly based on the individual contributor's capacity to gather the data. This could be solved by careful curation of the submissions to ensure that each data point is properly labeled with metadata but this again reduces the benefits of crowd sourcing data collection.
 
-We found a particular example on Kaggle that highlights this issue and inspired this project. A user of the very large, user generated database of bird call recordings - Xeno Cano\cite{xenocanto} - uploaded a carefully curated subset of the Xeno Canto library to Kaggle so that it was ready for data science workflows\cite{xenocantokaggle}. This represents significant work that would have to duplicated in the future since the Xeno Canto database continues to grow as user's submit new recordings. The recordings are of many different lengths and have different levels of background noise, thus necessitating the cleanup step prior to use for data science.
+We found a particular example on Kaggle that highlights this issue and inspired this project. A user of the very large, user generated database of bird call recordings - Xeno Cano\cite{xenocanto} - uploaded a carefully curated subset of the Xeno Canto library to Kaggle so that it was ready for data science workflows\cite{xenocantokaggle}. This represents significant work that may have to be repeated in the future since the Xeno Canto database continues to grow as user's submit new recordings. The recordings are of many different lengths and have different levels of background noise, thus necessitating the cleanup step prior to use for data science.
 
-In this paper we present an architecture that allows for crowd sourcing the curation efforts by caching cleaned up data points using a database based on flexible schema. This allows user's to perform the necessary data manipulation efforts and save the results for other's to use without requiring updating the source database's schema. We pair this cache with Apache Spark to allow for distributed processing of user's requests.
+In this paper we present an architecture that allows for crowd sourcing the curation efforts by caching cleaned up data points using a database based on flexible schema. This allows users to perform the necessary data manipulation efforts and save the results for others to use without requiring updating the source database's schema. We pair this cache with Apache Spark to allow for distributed processing of user's requests.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -324,7 +324,7 @@ In this paper we present an architecture that allows for crowd sourcing the cura
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Technology Stack}
-Figure \ref{fig:tech} shows the technologies we integrated for this project, each of which is introduced in this section. In the next section we show in detail how these technologies can be used together to create a cache of the Xeno Canto database.
+Figure \ref{fig:tech} shows the technologies we integrated for this project, each of which is introduced in this section. In the following sections we show in detail how these technologies can be used together to create a cache of the Xeno Canto database.
 \begin{figure*}[tb]  %image placeholder
   \centering
   \includegraphics[width=\textwidth]{tech_stack}
@@ -338,18 +338,18 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{MongoDB \& MongoDB Compass}
-MongoDB is a cross-platform program that allow users to create databases for very large data and is used in an abundance of modern applications. MongoDB differs from traditional SQL databases in that data is stored as JSON documents with a flexible schema. This is crucial in applications where data comes from diverse sources and may be of differing quality and completeness. Because each entry in MongoDB is stored as a JSON document MongoDB pairs naturaly with internet APIs where JSON is the defacto format for transfering data. MongoDB can handle very large files with millions of records of data with ease\cite{mongodb}.
+MongoDB is a cross-platform program that allow users to create databases for very large data and is used in an abundance of modern applications. MongoDB differs from traditional SQL databases in that data is stored as JSON documents with a flexible schema. This is crucial in applications where data comes from diverse sources and may be of differing quality and completeness. Because each entry in MongoDB is stored as a JSON document MongoDB pairs naturaly with internet APIs where JSON is the defacto format for transfering data. MongoDB can easily handle very large files and millions of records\cite{mongodb}.
 
-MongoDB Compass is a freely available desktop application for Linux, Mac, and Microsoft Windows that allows viewing and editing of remote MongoDB databases. This tool also allows for engineers to view read/write performance statistics to help them resolve performance issues\cite{mongodbcompass}.
+MongoDB Compass is a freely available desktop application for Linux, Mac, and Microsoft Windows that allows viewing and editing of remote MongoDB databases. This tool also allows engineers to view I/O performance statistics to help them resolve performance issues\cite{mongodbcompass}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Apache Spark}
-Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. Spark provides a framework whereby operations on very large data sets can be parallelized and distributed across a cluster of compute resources. Often compared to the earlier technology - Hadoop MapReduce - Spark is 100 times faster for some workloads.
+Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Spark provides a framework whereby operations on very large data sets can be parallelized and distributed across a cluster of compute resources. Often compared to the earlier technology - Hadoop MapReduce - Spark is 100 times faster for some workloads.
 
-Spark has interfaces in in many popular programming languages. Of particular interest for us is Python which is widely used in the scientific computing community for signal processing and machine learning. Apache Spark allows for user defined functions which enables the whole range of Python based scientific computing libraries to be parallelized on the Spark cluster\cite{spark}.
+Spark has interfaces in many popular programming languages. Of particular interest for us is Python which is widely used in the scientific computing community for signal processing and machine learning. Apache Spark allows for user defined functions which enables the whole range of Python based scientific computing libraries to be parallelized on the Spark cluster\cite{spark}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -366,7 +366,7 @@ Python allows for seamless integration of all technologies to be used in this pr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Jupyter Notebooks}
-Jupyter Notebooks is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor but results of computation are presented inline with the code\cite{jupyter}. The Juypter Notebook allows us to demonstrate step by step how our architecture is to be used and incorporated for a particular problem domain.
+Jupyter Notebooks is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor but results of computation are presented inline with the code\cite{jupyter}. A Juypter Notebook allows us to demonstrate step by step how our architecture is to be used and incorporated for a particular problem domain.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -374,9 +374,9 @@ Jupyter Notebooks is a user-friendly open source application that operates as a 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{OCI Containers}
-The Open Container Initiative (OCI) provides standards and formats for containerized computing technologies to ensure compatility of a wide range of products - both commercial and open source\cite{OCI}. We used the container runtime system Podman\cite{rhelpodman} to build and integrate the technologies mentioned above. Containers are a powerful way to automate installation and configuration of software and help unlock automated deployment of cloud services\cite{gartnercontainer}.
+The Open Container Initiative (OCI) provides standards and formats for containerized computing technologies to ensure compatility of a wide range of products - both commercial and open source\cite{OCI}. We used the container runtime system Podman\cite{rhelpodman} to build and integrate the technologies mentioned above. Containers are a powerful way to automate the installation and configuration of software stacks and help unlock automated deployment of cloud services\cite{gartnercontainer}.
 
-In this project we use a container definition to control how all of the components are installed and configured to talk together. The container definition allows for managing each configuration change in a source control system so that we can track changes to configuration over time.
+In this project we use a container definition to control how all of the components are installed and integrated. The container definition allows for managing each configuration change in a source control system so that we can track changes to configuration over time.
 
 The container is also easily transfered to virtual machines running in the cloud so that efforts to configure and integrate the technologies don't have to be duplicated each time a cloud instance is brought online.
 
@@ -397,15 +397,15 @@ Microsoft Azure is a subscription based application that allows users to create 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Architecture}
-The main purpose of caching previous results is to reduce the amount of repeated work. Similarly, we also want to reduce the amount of wasted network traffic. This is especially important if the source database and or end users are limited in their bandwidth. To do this we present and architecture that keeps the the cached data (using MongoDB) and the computation on that data using (using Spark) as close to each other as possible.
+The main purpose of caching previous results is to reduce the amount of repeated work. Similarly, we also want to reduce the amount of wasted network traffic. This is especially important if the source database and our end users have limited network bandwidth. To acomplish this reduction we present an architecture that keeps the the caching of data (using MongoDB) and the computation on that data using (using Spark) as close to each other as possible.
 
-User's of the architecture can manipulate and cache results as necessary but keeping the data on the remote, cloud-based infrastructure until the very final step when they retrieve results for viewing on their local resources. To acomplish this it is necessary that only metadata be transfered to the user's local environment (as can be seen in Figure \ref{fig:tech}). The data itself which is assumed to be much larger than the metadata is only ever transferred from the source database into the remote cluster. This is beneficial if we assume that the network capacity between the source database and remote cluster is much higher than the network bandwidth available to the user's local environment.
+Users of the architecture can manipulate and cache results as necessary while keeping the data on the remote, cloud-based infrastructure until the very final step when they retrieve results for viewing on their local resources. To acomplish this it is necessary that only metadata be transfered to the user's local environment (as can be seen in Figure \ref{fig:tech}). The data itself which is assumed to be much larger than the metadata is only ever transferred from the source database into the remote cluster. This is beneficial if we assume that the network capacity between the source database and remote cluster is much higher than the network bandwidth available to the user's local environment.
 
 A typical transaction takes place as follows:
 \begin{enumerate}
-  \item{The user retrieves some metadata from the source database into their Jupyter Notebook according to the their desired parameters. The user has a direct connection to the MongoDB cache which allows them to determine if there are results already available that match the operation they wish to perform and the metadata they retrieved. The dynamic nature of MongoDB schema makes it a perfect technology for performing open ended queries and comparisons such as this.}
+  \item{The user retrieves some metadata from the source database into their Jupyter Notebook according to their desired parameters. The user has a direct connection to the MongoDB cache which allows them to determine if there are results already available that match the operation they wish to perform and the metadata they retrieved. The dynamic nature of MongoDB schema makes it a perfect technology for performing open ended queries and comparisons such as this. These queires do not require transfer of large data entries, only the metadata.}
   \item{Any results that could not be found in the cache represent new operations that need to be performed by Apache Spark. The user creates a processing request that includes the metadata associated with the data to be processed and the instructions for how to perform the processing. This processing request is sent to Apache Spark using a Spark DataFrame and a user defined function (UDF).}
-  \item{For each item of metadata Apache Spark retrieves the actual data from the source database and then runs the requested processing on that data using the UDF provided by the user. Each item is retrieved and processed in parallel.}\label{step:retrieve}
+  \item{For each item of metadata in the processing request Apache Spark retrieves the actual data from the source database and then runs the requested processing on that data using the UDF provided by the user. Each item is retrieved and processed in parallel.}\label{step:retrieve}
   \item{Apache Spark saves the results of these computations into the MongoDB cache.}
   \item{Now all items from the original query are available in the cache so the user may retrieve them into their local environment (an expensive operation) or they may run further operations on them by providing other UDFs to Apache Spark.}
 \end{enumerate}
@@ -443,7 +443,7 @@ The current implementation of our container does not support multi-node Spark an
 \end{figure*}
 
 
-To demonstrate and prove out the proposed architecture we developed an application\footnotemark to cache and query the massive, crowd sourced database of bird call recordings - \textit{xeno-canto}. Figure \ref{fig:flow} shows the logical flow of our test application. We will describe this flow in detail below. We chose bandpass filtering as a demonstration of the kinds of operations that could be performed and cached in the database. The flexible schema of MongoDB allows for any kind of operation to be performed provided that the parameters of the operation are in a format that can be stored to a JSON document.
+To demonstrate and prove out the proposed architecture we developed an application\footnotemark to cache and query the massive, crowd sourced database of bird call recordings - Xeno Canto. Figure \ref{fig:flow} shows the logical flow of our test application. We will describe this flow in detail below. We chose bandpass filtering as a demonstration of the kinds of operations that could be performed and cached in the database. The flexible schema of MongoDB allows for any kind of operation to be performed provided that the parameters of the operation are in a format that can be stored to a JSON document.
 
 
 \footnotetext{Our application is available at \url{https://github.com/MarkOfLark/gmu_ece_499_590_project} under the MIT License\cite{mitlicense} and subject to the George Mason University Honor Code\cite{gmuhonorcode}.}
@@ -453,16 +453,16 @@ To demonstrate and prove out the proposed architecture we developed an applicati
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Caching the Xeno Canto Bird Call Database}
-The \textit{xeno-canto} database has over 500,000 recordings from all around the world, generated by more than 6000 contributors, and representing close to 9000 hours of recordings\cite{xenocanto}. \textit{Xeno-canto} provides a rich API for querying the database which we used to populate the MongoDB database. These two technologies integrate seamlessly because the \textit{xeno-canto} API returns JSON data which directly forms the basis for documents in the MongoDB collection.
+The Xeno Canto database has over 500,000 recordings from all around the world, generated by more than 6000 contributors, and representing close to 9000 hours of recordings\cite{xenocanto}. Xeno Canto provides a rich API for querying the database which we used to populate the MongoDB database. These two technologies integrate seamlessly because the Xeno Canto API returns JSON data which directly forms the basis for documents in the MongoDB collection.
 
-The example query in Listing \ref{lst:query}, which asks for all recordings made in the United States that are 10 seconds long ($\pm$ 1\%). It returns over 200 results, of which we use a subset for demonstration purposes.
-\begin{lstlisting}[language=Txt, caption={\textit{Xeno-canto} Query}, label={lst:query}]
+The example query in Listing \ref{lst:query}, which asks for all recordings made in the United States that are 10 seconds long ($\pm$ 1\%), returns the metadata. It returns over 200 results, of which we use a subset for demonstration purposes.
+\begin{lstlisting}[language=Txt, caption={Xeno Canto Query}, label={lst:query}]
 query=cnt:"united states"+len:10
 \end{lstlisting}
 
-Each result contains a host of metadata but for purposes of caching we are most interested in the \code{id} field which is a unique identifier provided by \textit{xeno-canto}.
+Each result contains many metadata fields but for purposes of caching we are most interested in the \code{id} field which is a unique identifier provided by Xeno Canto.
 
-We loop over each result and query MongoDB if an entry with a matching \code{id} is already in the file collection. We further query if an entry with a matching \code{id} has identical filter parameters to the parameters we requested. If it does not then we add this \code{id} to a list of recordings to be fetched and filtered. MongoDB's flexible schema allows for very straight forward matching of \code{id} fields and filter parameter fields which may or may not be present in each record, or of the same type and length. This is a desireable property since if a recording is present in the cache but was filtered with different parameters then we would still consider this a cache-miss.
+We loop over each result and query MongoDB if an entry with a matching \code{id} is already in the database. We further query if that entry has identical filter parameters to the parameters we requested. If it does not then we add this \code{id} to a list of recordings to be fetched and filtered. MongoDB's flexible schema allows for very straight forward matching of \code{id} fields and filter parameter fields which may or may not be present in each record, or of the same type and length. This is a desireable property since if a recording is present in the cache but was filtered with different parameters then we would still consider this a cache-miss.
 
 After processing all of the results we have two lists of entries: recordings that were found in the cache and recordings that were not. We pass the list of not-found recordings to Spark through a Spark DataFrame for parallel downloading and processing.
 
@@ -492,14 +492,14 @@ new_df = df.select(
     'filter_amplitudes').alias('file_content')
 )
 \end{lstlisting}
-The \code{select} operation takes a comma-separated list of DataFrame column names and returns a new DataFrame with those columns. In this example we use \code{*} for the first parameter to say that we want to select all columns of the source DataFrame. The second parameter represents appending a new column to the DataFrame which will be called \code{file\_content} and will be the actual samples we read from the downloaded MP3 recording from \textit{xeno-canto} and filtered by our DSP filter. The source of this new column comes from three columns already in the DataFrame - \code{file}, \code{filter\_edges}, and \code{filter\_amplitudes} - that we pass to the UDF shown in Listing \ref{lst:udf}. The Spark engine will call this UDF on each row of the DataFrame in parallel using as many computing resources as are available in the Spark cluster. This means that downloading the original recording never occurs in the local processing environment.
+The \code{select} operation takes a comma-separated list of DataFrame column names and returns a new DataFrame with those columns. In this example we use \code{*} for the first parameter to say that we want to select all columns of the source DataFrame. The second parameter represents appending a new column to the DataFrame which will be called \code{file\_content} and will be the actual samples we read from the downloaded MP3 recording from Xeno Canto and filtered by our DSP filter. The source of this new column comes from three columns already in the DataFrame - \code{file}, \code{filter\_edges}, and \code{filter\_amplitudes} - that we pass to the UDF shown in Listing \ref{lst:udf}. The Spark engine will call this UDF on each row of the DataFrame in parallel using as many computing resources as are available in the Spark cluster. The first operation is to download the the recording specified by the parameter - \code{file} - into the Spark environment thus ensuring that the original recording never has to be downloaded in the local processing environment.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Digital Filtering}
-After downloading a recording our UDF creates a digital filter using the Parks–McClellan algorithm\cite{dsp} according to the parameters specified by \code{filter\_edges} and \code{filter\_amplitudes}. This filter is then applied to the recording samples which are returned by the UDF and stored as a new column in the DataFrame called \code{file\_content} (as described in the previous section). It should be noted at this point that all the data movement (with the exception of the \textit{xeno-canto} metadata) has occured on the remote Spark cluster and not in the local Python environment.
+After downloading a recording our UDF creates a digital filter using the Parks–McClellan algorithm\cite{dsp} according to the parameters specified by \code{filter\_edges} and \code{filter\_amplitudes}. This filter is then applied to the recording samples which are returned by the UDF and stored as a new column in the DataFrame called \code{file\_content} (as described in the previous section). It should be noted at this point that all the data movement (with the exception of the Xeno Canto metadata) has occured on the remote Spark cluster and not in the local Python environment.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -521,7 +521,7 @@ Merging new results and cached results is acomplished simply by creating a new S
 \end{figure}
 
 
-At this point we have a DataFrame where each row contains the results of filtering the \textit{xeno-canto} recordings. We could directly view these results by calling \code{collect} on the DataFrame but if we have more operations to perform it is more efficient to keep the data in Spark and offload further processing to the Spark cluster.
+At this point we have a DataFrame where each row contains the results of filtering the Xeno Canto recordings. We could directly view these results by calling \code{collect} on the DataFrame but if we have more operations to perform it is more efficient to keep the data in Spark and offload further processing to the Spark cluster.
 
 As an example of how to do this we created the UDF shown in Listing \ref{lst:spec}.
 \begin{lstlisting}[language=Txt, caption={Taking FFTs with Spark}, label={lst:spec}]
@@ -545,7 +545,7 @@ spec = df.select(
   ).alias('mag')
 ).collect()
 \end{lstlisting}
-The local DataFrame \code{spec} only contains the columns \code{id} and \code{mag}. For each row (there are 4 in this example) contains 4096 floating point values in the \code{mag} column which represents a huge reduction in memory since the original MP3 files were all approximately 10 seconds long with 48000 samples per second. Figure \ref{fig:spectra} shows local plots of the spectra for the 4 recordings that we fetched from the cache. Using Spark and UDFs we were able to obtain recordings, bandpass filter them, and obtain their spectra without ever moving data out of the Spark cluster until the last step. In this example we asked for filters that passed the band from 10\% to 20\% of the sampling frequency. We can see in the plot that we have indeed acheived the desired filtering.
+The local DataFrame \code{spec} only contains the columns \code{id} and \code{mag}. Each row (there are 4 in this example) contains 4096 floating point values in the \code{mag} column which represents a huge reduction in memory that needs to move from the remote cluster to the local environment since the original MP3 files were all approximately 10 seconds long with 48000 samples per second. Figure \ref{fig:spectra} shows local plots of the spectra for the 4 recordings that we fetched from the cache. Using Spark and UDFs we were able to obtain recordings, bandpass filter them, and obtain their spectra without ever moving data out of the Spark cluster until the last step. In this example we asked for filters that passed the band from 10\% to 20\% of the sampling frequency. We can see in the Figure \ref{fig:spectra} that we have indeed acheived the desired filtering.
 
 Because the filtered files are cached in MongoDB, if we desire to visualize them in other ways or do further processing there is no need to download the source files again.
 
@@ -560,7 +560,7 @@ In addition to using Python data processing libraries (matplotlib, numpy) to vis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
-In conclusion based on the projects result we can conclude that in fact the project operated as intended as seen in the data and graphs in the report. The scope of this project was to incorporate the techniques learned in ECE 499 and combine those techniques with Machine Learning and signal processing. Although this was just incorporated in something as simple as bird sounds these practices can be scaled onto data that is more rigorous and/or import. Finally this report hopes to inform the audience of the bridge between Signal Processing and Machine Learning and how they can be applied to uses cases.
+We have demonstrated how to directly apply big data technology to a signal processing problem efficiently across a distributed computing cluster. We have shown how results can be cached and reused for later processing jobs thus allowing users to process large data sets even when they work in environments without abundant network and computation resources.
 
 
 % \footnotetext{The implementation is available upon request under the MIT Open Source Software license and subject to the George Mason University Honor Code.}
