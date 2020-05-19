@@ -339,7 +339,7 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{MongoDB \& MongoDB Compass}
-MongoDB is a cross-platform program that allow users to create databases for very large data and is used in abundance of modern application. MongoDB specifically in this project will be used to create a database that will allow users to cache and query. This will also allow the project to have seemless connection from jupyter notebook to database. Also MongoDB will allow for very large files with millions of records of data to be handled with ease because of the structure of this application\cite{mongodb}.
+MongoDB is a cross-platform program that allow users to create databases for very large data and is used in an abundance of modern applications. MongoDB differs from traditional SQL databases in that data is stored as JSON documents with a flexible schema. This is crucial in applications where data comes from diverse sources and may be of differing quality and completeness. Because each entry in MongoDB is stored as a JSON document MongoDB pairs naturaly with internet APIs where JSON is the defacto format for transfering data. MongoDB can handle very large files with millions of records of data with ease\cite{mongodb}.
 
 MongoDB Compass is a freely available desktop application for Linux, Mac, and Microsoft Windows that allows viewing and editing of remote MongoDB databases. This tool also allows for engineers to view read/write performance statistics to help them resolve performance issues\cite{mongodbcompass}.
 
@@ -348,7 +348,9 @@ MongoDB Compass is a freely available desktop application for Linux, Mac, and Mi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Apache Spark}
-Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. In this project Apache Spark will allow operations such as spark user defined functions and parallelization of data to be incorporated into the project. Apache spark also allows for very tedious task to filter and examine data to be done seamlessly and is a huge contributor to this project\cite{spark}.
+Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. Spark provides a framework whereby operations on very large data sets can be parallelized and distributed across a cluster of compute resources. Often compared to the earlier technology - Hadoop MapReduce - Spark is 100 times faster for some workloads.
+
+Spark has interfaces in in many popular programming languages. Of particular interest for us is Python which is widely used in the scientific computing community for signal processing and machine learning. Apache Spark allows for user defined functions which enables the whole range of Python based scientific computing libraries to be parallelized on the Spark cluster\cite{spark}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -356,14 +358,16 @@ Apache Spark is a data processing framework that allows users to perform operati
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Python}
-Python is a programming language that allows us to incorporate functions and predefined libraries to tackle use case at hand. Python will be used throughout the project because it very ease to incorporate Spark and python also the libraries in python for example numpy allow for solution to challenging problems. Finally Python allows for an ease of corporation of all programs to be used in this program\cite{python}.
+Python is one the fastest growing programming language\cite{python}. Though considered to be a general purpose language, it has been adopted by the scientific computing community because of the availablity of libraries such as \code{numpy}, \code{scipy}, and \code{matplotlib}. It has also positioned itself as the leader in machine learning applications through the availabilty of high quality machine learning libraries such as \code{tensorflow}, and many others.
+
+Python allows for seamless integration of all technologies to be used in this project since each of the technologies we selected have high quality Python APIs.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Jupyter Notebooks}
-Jupyter Notebook is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor and compiler. Juypter Notebook is a key foundation in this project that allows us to incorporate allow these programs previously mentioned to be used in practice and allow us to understand step by step how the solution is be used and incorporated\cite{jupyter}.
+Jupyter Notebooks is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor but results of computation are presented inline with the code\cite{jupyter}. The Juypter Notebook allows us to demonstrate step by step how our architecture is to be used and incorporated for a particular problem domain.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -375,14 +379,14 @@ The Open Container Initiative (OCI) provides standards and formats for container
 
 In this project we use a container definition to control how all of the components are installed and configured to talk together. The container definition allows for managing each configuration change in a source control system so that we can track changes to configuration over time.
 
-The container is also easily transfered to virtual machines running in the cloud so that effort spent to configure and integrate the tools don't have to be duplicated each time a cloud instance is brought online.
+The container is also easily transfered to virtual machines running in the cloud so that efforts to configure and integrate the technologies don't have to be duplicated each time a cloud instance is brought online.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Microsoft Azure}
-Microsoft Azure is a subscription based application that allows users to create VM also know as virtual machines. These virtual machines allow users to save space in there individual computer and run very large and intensive applications through these virtual machines. Allowing users to have appropriate tools to complete the task at hand. Virtual machines are incorporated in this project by using the VM to be the bases for how everything is run and the operating system for this project\cite{azure}.
+Microsoft Azure is a subscription based application that allows users to create virtual machines (VM). VMs hosted on Microsoft's cloud infrastructure allow running very large and intensive applications that scale horizontally as user's needs increase or decrease. Azure provides tools for managing both large and small clusters of virtual machines across the cloud\cite{azure}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
