@@ -4,7 +4,7 @@
 
 
 \usepackage{cite}
-
+\usepackage{listings}
 
 
 
@@ -212,6 +212,7 @@
 \newcommand{\eref}[1]{(\ref{#1})}
 \newcommand{\fref}[1]{Figure \ref{#1}}
 \newcommand{\sref}[1]{Section \ref{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
 
 \title{Transforming and Caching Entries from Massive, Online Databases using Apache Spark and MongoDB}
 %\author{Mark~McDermott, \\ Student~MS.~E.E., George~Mason~University \\ mmcderm1@gmu.edu}
@@ -228,6 +229,23 @@ George Mason University\\
 Fairfax, VA 22030\\
 Email: jvelasq@gmu.edu}
 }
+
+\lstdefinelanguage{Txt}
+{
+    basicstyle=\ttfamily\small,
+    keepspaces=true,
+    columns=fullflexible,
+    frame=single,
+}
+
+\makeatletter
+\def\lst@makecaption{%
+  \def\@captype{table}%
+  \@makecaption
+}
+\makeatother
+
+
 
 \begin{document}
 % The paper headers
@@ -316,20 +334,21 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 \end{figure*}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%file:///C:/Users/JoseA/Downloads/Untitled drawing (1).pngfile:///C:/Users/JoseA/Downloads/Untitled drawing (1).png%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{MongoDB}
-	MongoDB is a cross-platform program that allow users to create databases for very large data and is used in abundance of modern application. MongoDB specifically in this project will be used to create a database that will allow users to cache and query. This will also allow the project to have seemless connection from jupyter notebook to database. Also MongoDB will allow for very large files with millions of records of data to be handled with ease because of the structure of this application.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MongoDB \& MongoDB Compass}
+MongoDB is a cross-platform program that allow users to create databases for very large data and is used in abundance of modern application. MongoDB specifically in this project will be used to create a database that will allow users to cache and query. This will also allow the project to have seemless connection from jupyter notebook to database. Also MongoDB will allow for very large files with millions of records of data to be handled with ease because of the structure of this application\cite{mongodb}.
 
+MongoDB Compass is a freely available desktop application for Linux, Mac, and Microsoft Windows that allows viewing and editing of remote MongoDB databases. This tool also allows for engineers to view read/write performance statistics to help them resolve performance issues\cite{mongodbcompass}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Apache Spark}
-	Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. In this project Apache Spark will allow operations such as spark user defined functions and parallelization of data to be incorporated into the project. Apache spark also allows for very tedious task to filter and examine data to be done seamlessly and is a huge contributor to this project.
+Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. In this project Apache Spark will allow operations such as spark user defined functions and parallelization of data to be incorporated into the project. Apache spark also allows for very tedious task to filter and examine data to be done seamlessly and is a huge contributor to this project\cite{spark}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -337,14 +356,14 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Python}
-	Python is a programming language that allows us to incorporate functions and predefined libraries to tackle use case at hand. Python will be used throughout the project because it very ease to incorporate Spark and python also the libraries in python for example numpy allow for solution to challenging problems. Finally Python allows for an ease of corporation of all programs to be used in this program.
+Python is a programming language that allows us to incorporate functions and predefined libraries to tackle use case at hand. Python will be used throughout the project because it very ease to incorporate Spark and python also the libraries in python for example numpy allow for solution to challenging problems. Finally Python allows for an ease of corporation of all programs to be used in this program\cite{python}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Jupyter Notebooks}
-	Jupyter Notebook is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor and compiler. Juypter Notebook is a key foundation in this project that allows us to incorporate allow these programs previously mentioned to be used in practice and allow us to understand step by step how the solution is be used and incorporated.
+Jupyter Notebook is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor and compiler. Juypter Notebook is a key foundation in this project that allows us to incorporate allow these programs previously mentioned to be used in practice and allow us to understand step by step how the solution is be used and incorporated\cite{jupyter}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -352,14 +371,18 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{OCI Containers}
+The Open Container Initiative (OCI) provides standards and formats for containerized computing technologies to ensure compatility of a wide range of products - both commercial and open source\cite{OCI}. We used the container runtime system Podman\cite{rhelpodman} to build and integrate the technologies mentioned above. Containers are a powerful way to automate installation and configuration of software and help unlock automated deployment of cloud services\cite{gartnercontainer}.
 
+In this project we use a container definition to control how all of the components are installed and configured to talk together. The container definition allows for managing each configuration change in a source control system so that we can track changes to configuration over time.
+
+The container is also easily transfered to virtual machines running in the cloud so that effort spent to configure and integrate the tools don't have to be duplicated each time a cloud instance is brought online.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Microsoft Azure}
-	Microsoft Azure is a subscription based application that allows users to create VM also know as virtual machines. These virtual machines allow users to save space in there individual computer and run very large and intensive applications through these virtual machines. Allowing users to have appropriate tools to complete the task at hand. Virtual machines are incorporated in this project by using the VM to be the bases for how everything is run and the operating system for this project.
+Microsoft Azure is a subscription based application that allows users to create VM also know as virtual machines. These virtual machines allow users to save space in there individual computer and run very large and intensive applications through these virtual machines. Allowing users to have appropriate tools to complete the task at hand. Virtual machines are incorporated in this project by using the VM to be the bases for how everything is run and the operating system for this project\cite{azure}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -371,8 +394,9 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Architecture}
-	The previously mentioned technology stack is all the applications needed to complete the task at hand. Thankfully all the applications used were easily incorporated onto each other because of there design and layout. In this section we will explain how these application were incorporated into each other and how these applications collaborate together.
-	Starting with the virtual machine that was created with the help of Microsoft Azure, allowed for the platform to be created and a base to begin using these other application. Secondly the Podman that are containers that allow these applications to be runned in the background . Also allows these applications to runned seamlessly, because all these application can be launched though a command prompt. Furthermore the database was created with MongoDB because MongoDB is a user-friendly application that works seamlessly with Apache Spark to cache and query to a very large database as needed. Next the Apache Spark is used because this allows the data to be manipulated because Apache Spark is a efficient way to process large data sets, and consequently allowing for greater manipulation of the data. Which is where Juypter Notebook comes in as both a text editor and compiler for all these applications as it supports them and is a user-friendly GUI. Finally Python, Numpy, and Matplotlib are libraries were these manipulations can be done with processes that are pre-built and user defined functions to manipulate the data.  
+The previously mentioned technology stack is all the applications needed to complete the task at hand. Thankfully all the applications used were easily incorporated onto each other because of there design and layout. In this section we will explain how these application were incorporated into each other and how these applications collaborate together.
+
+Starting with the virtual machine that was created with the help of Microsoft Azure, allowed for the platform to be created and a base to begin using these other application. Secondly the Podman that are containers that allow these applications to be runned in the background . Also allows these applications to runned seamlessly, because all these application can be launched though a command prompt. Furthermore the database was created with MongoDB because MongoDB is a user-friendly application that works seamlessly with Apache Spark to cache and query to a very large database as needed. Next the Apache Spark is used because this allows the data to be manipulated because Apache Spark is a efficient way to process large data sets, and consequently allowing for greater manipulation of the data. Which is where Juypter Notebook comes in as both a text editor and compiler for all these applications as it supports them and is a user-friendly GUI. Finally Python, Numpy, and Matplotlib are libraries were these manipulations can be done with processes that are pre-built and user defined functions to manipulate the data.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -383,14 +407,8 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Use Case}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Xeno Canto Bird Call Database}
-\begin{figure}[!htb]
+The demonstrate and prove out the proposed architecture we developed an application\footnotemark to cache and query the massive, crowd sourced database of bird call recordings - \textit{xeno-canto}. Figure \ref{fig:flow} shows the logical flow of our test application. We will describe this flow in detail below.
+\begin{figure}
   \centering
   \includegraphics[width=3.4in]{project_flow_chart}
   \caption{Flow chart of the process used to merge querries from the cache and from the online database and then perform parallel processing using Apache Spark.}
@@ -398,38 +416,120 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 \end{figure}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Digital Filtering}
 
+\footnotetext{Our application is available at \url{https://github.com/MarkOfLark/gmu_ece_499_590_project} under the MIT License\cite{mitlicense} and subject to the George Mason University Honor Code\cite{gmuhonorcode}.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Caching the Xeno Canto Bird Call Database}
+The \textit{xeno-canto} database has over 500,000 recordings from all around the world, generated by more than 6000 contributors, and representing close to 9000 hours of recordings\cite{xenocanto}. \textit{Xeno-canto} provides a rich API for querying the database which we used to populate the MongoDB database. These two technologies integrate seamlessly because the \textit{xeno-canto} API returns JSON data which directly forms the basis for documents in the MongoDB collection.
+
+The example query in Listing \ref{lst:query}, which asks for all recordings made in the United States that are 10 seconds long ($\pm$ 1\%). It returns over 200 results, of which we use a subset for demonstration purposes.
+\begin{lstlisting}[language=Txt, caption={\textit{Xeno-canto} Query}, label={lst:query}]
+query=cnt:"united states"+len:10
+\end{lstlisting}
+
+Each result contains a host of metadata but for purposes of caching we are most interested in the \code{id} field which is a unique identifier provided by \textit{xeno-canto}.
+
+We loop over each result and query MongoDB if an entry with a matching \code{id} is already in the file collection. We further query if an entry with a matching \code{id} has identical filter parameters to the parameters we requested. If it does not then we add this \code{id} to a list of recordings to be fetched and filtered. MongoDB's flexible schema allows for very straight forward matching of \code{id} fields and filter parameter fields which may or may not be present in each record, or of the same type and length. This is a desireable property since if a recording is present in the cache but was filtered with different parameters then we would still consider this a cache-miss.
+
+After processing all of the results we have two lists of entries: recordings that were found in the cache and recordings that were not. We pass the list of not-found recordings to Spark through a Spark DataFrame for parallel downloading and processing.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{User Defined Functions}
+Through the power of Apache Spark and the PySpark Python module we are able to download and process each recording in parallel. This capability is provided by the UDF (user defined function) module of PySpark. The signature of the UDF we defined for downloading and filtering is given in Listing \ref{lst:udf}.
+\begin{lstlisting}[language=Txt, caption={PySpark User Defined Functions}, label={lst:udf}]
+@udf(returnType=ArrayType(DoubleType()))
+def load_and_filter(
+  file_url,
+  filter_edges,
+  filter_amplitudes):
+  ...
+\end{lstlisting}
+The annotation \code{@udf} tells PySpark that this function can be offloaded to the Spark engine and further that it should expect the return type to be an array of double precision values. This return type annotation is crucial since Spark is natively running the Scala programming language on the Java Virtual Machine so types of data that are transfered to the Spark engine must be mapped to Java language types.
 
+To call this function we use the \code{select} operation on our DataFrame as shown in Listing \ref{lst:select}
+\begin{lstlisting}[language=Txt, caption={PySpark DataFrame Select()}, label={lst:select}]
+new_df = df.select(
+  '*',
+  load_and_filter(
+    'file',
+    'filter_edges',
+    'filter_amplitudes').alias('file_content')
+)
+\end{lstlisting}
+The \code{select} operation takes a comma-separated list of DataFrame column names and returns a new DataFrame with those columns. In this example we use \code{*} for the first parameter to say that we want to select all columns of the source DataFrame. The second parameter represents appending a new column to the DataFrame which will be called \code{file\_content} and will be the actual samples we read from the downloaded MP3 recording from \textit{xeno-canto} and filtered by our DSP filter. The source of this new column comes from three columns already in the DataFrame - \code{file}, \code{filter\_edges}, and \code{filter\_amplitudes} - that we pass to the UDF shown in Listing \ref{lst:udf}. The Spark engine will call this UDF on each row of the DataFrame in parallel using as many computing resources as are available in the Spark cluster. This means that downloading the original recording never occurs in the local processing environment.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Digital Filtering}
+After downloading a recording our UDF creates a digital filter using the Parks–McClellan algorithm\cite{dsp} according to the parameters specified by \code{filter\_edges} and \code{filter\_amplitudes}. This filter is then applied to the recording samples which are returned by the UDF and stored as a new column in the DataFrame called \code{file\_content} (as described in the previous section). It should be noted at this point that all the data movement (with the exception of the \textit{xeno-canto} metadata) has occured on the remote Spark cluster and not in the local Python environment.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Merging New Results and Cached Results}
+Merging new results and cached results is acomplished simply by creating a new Spark DataFrame from the Spark MongoDB connector plugin using a query of all requested \code{id} fields and not just the fields that required downloading and filtering. Since the last step performed by the UDF in listing \ref{lst:udf} is to store the new results DataFrame into MongoDB we can leverage MongoDB's ability to efficiently query documents and create a new Spark DataFrame that contains all the recordings we are interested in.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Viewing Results}
-\begin{figure}[!htb]
+
+\begin{figure*}  %image placeholder
+  \centering
+  \includegraphics[width=\textwidth]{compass_screenshot}
+  \caption{MongoDB Compass Application for viewing and managing MongoDB databases.}
+  \label{fig:compass}
+\end{figure*}
+
+
+\begin{figure}
   \centering
   \includegraphics[width=3.4in]{output_spectrum}
   \caption{Results generated by running two separate Apache Spark jobs: one to download and apply a bandpass filter to four different recordings from xeno-canto.org in parallel, and another to compute the magnitude spectra of the recordings.}
   \label{fig:spectra}
 \end{figure}
 
-\begin{figure*}[tb]  %image placeholder
-  \centering
-  \includegraphics[width=\textwidth]{compass_screenshot}
-  \caption{MongoDB Compass Application for viewing and managing MongoDB databases.}
-  \label{fig:compass}
-\end{figure*}
+At this point we have a DataFrame where each row contains the results of filtering the \textit{xeno-canto} recordings. We could directly view these results by calling \code{collect} on the DataFrame but if we have more operations to perform it is more efficient to keep the data in Spark and offload further processing to the Spark cluster.
+
+As an example of how to do this we created the UDF shown in Listing \ref{lst:spec}.
+\begin{lstlisting}[language=Txt, caption={Taking FFTs with Spark}, label={lst:spec}]
+@udf(returnType=ArrayType(DoubleType()))
+def get_magnitude_spectrum( signal, Nfft ):
+    return np.abs(
+      np.fft.fft(
+        np.array( signal ),
+        n=Nfft
+      )
+    ).tolist()
+\end{lstlisting}
+Here we take the FFT of each signal and return that as a new column. To call this we again use the Spark DataFrame function \code{select} as shown in Listing \ref{lst:select2}. The difference from Listing \ref{lst:select} is that now we are not selecting all columns but only the columns we need since the result is going to get collected from the Spark cluster into our local python environment.
+\begin{lstlisting}[language=Txt, caption={Collecting UDF Results for Local Processing}, label={lst:select2}]
+Nfft = 4096
+spec = df.select(
+  'id',
+  get_magnitude_spectrum(
+    'file_content',
+    lit(Nfft)
+  ).alias('mag')
+).collect()
+\end{lstlisting}
+The local DataFrame \code{spec} only contains the columns \code{id} and \code{mag}. For each row (there are 4 in this example) contains 4096 floating point values in the \code{mag} column which represents a huge reduction in memory since the original MP3 files were all approximately 10 seconds long with 48000 samples per second. Figure \ref{fig:spectra} shows local plots of the spectra for the 4 recordings that we fetched from the cache. Using Spark and UDFs we were able to obtain recordings, bandpass filter them, and obtain their spectra without ever moving data out of the Spark cluster until the last step. In this example we asked for filters that passed the band from 10\% to 20\% of the sampling frequency. We can see in the plot that we have indeed acheived the desired filtering.
+
+Because the filtered files are cached in MongoDB, if we desire to visualize them in other ways or do further processing there is no need to download the source files again.
+
+In addition to using Python data processing libraries (matplotlib, numpy) to visualize data we can also directly view and control the cache using MongoDB Compass\cite{mongodbcompass} as described before. Figure \ref{fig:compass} shows one of the cache entries visualized by that tool.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -439,7 +539,7 @@ Figure \ref{fig:tech} shows the technologies we integrated for this project, eac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
-	In conclusion based on the projects result we can conclude that in fact the project operated as intended as seen in the data and graphs in the report. The scope of this project was to incorporate the techniques learned in ECE 499 and combine those techniques with Machine Learning and signal processing. Although this was just incorporated in something as simple as bird sounds these practices can be scaled onto data that is more rigorous and/or import. Finally this report hopes to inform the audience of the bridge between Signal Processing and Machine Learning and how they can be applied to uses cases.  
+In conclusion based on the projects result we can conclude that in fact the project operated as intended as seen in the data and graphs in the report. The scope of this project was to incorporate the techniques learned in ECE 499 and combine those techniques with Machine Learning and signal processing. Although this was just incorporated in something as simple as bird sounds these practices can be scaled onto data that is more rigorous and/or import. Finally this report hopes to inform the audience of the bridge between Signal Processing and Machine Learning and how they can be applied to uses cases.
 
 
 % \footnotetext{The implementation is available upon request under the MIT Open Source Software license and subject to the George Mason University Honor Code.}
