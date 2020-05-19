@@ -348,7 +348,7 @@ MongoDB Compass is a freely available desktop application for Linux, Mac, and Mi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Apache Spark}
-Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. In this project Apache Spark will allow operations such as spark user defined functions and parallelization of data to be incorporated into the project. Apache spark also allows for very tedious task to filter and examine data to be done seamlessly and is a huge contributor to this project.
+Apache Spark is a data processing framework that allows users to perform operations on data sets that are very large. Apache Spark is a key application that allows big data and machine learning to be incorporated in a user-friendly application. In this project Apache Spark will allow operations such as spark user defined functions and parallelization of data to be incorporated into the project. Apache spark also allows for very tedious task to filter and examine data to be done seamlessly and is a huge contributor to this project\cite{spark}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -356,14 +356,14 @@ Apache Spark is a data processing framework that allows users to perform operati
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Python}
-Python is a programming language that allows us to incorporate functions and predefined libraries to tackle use case at hand. Python will be used throughout the project because it very ease to incorporate Spark and python also the libraries in python for example numpy allow for solution to challenging problems. Finally Python allows for an ease of corporation of all programs to be used in this program.
+Python is a programming language that allows us to incorporate functions and predefined libraries to tackle use case at hand. Python will be used throughout the project because it very ease to incorporate Spark and python also the libraries in python for example numpy allow for solution to challenging problems. Finally Python allows for an ease of corporation of all programs to be used in this program\cite{python}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Jupyter Notebooks}
-Jupyter Notebook is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor and compiler. Juypter Notebook is a key foundation in this project that allows us to incorporate allow these programs previously mentioned to be used in practice and allow us to understand step by step how the solution is be used and incorporated.
+Jupyter Notebook is a user-friendly open source application that operates as a GUI or "Notebook App" that allows users to write code similar to a text-editor and compiler. Juypter Notebook is a key foundation in this project that allows us to incorporate allow these programs previously mentioned to be used in practice and allow us to understand step by step how the solution is be used and incorporated\cite{jupyter}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -382,7 +382,7 @@ The container is also easily transfered to virtual machines running in the cloud
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Microsoft Azure}
-Microsoft Azure is a subscription based application that allows users to create VM also know as virtual machines. These virtual machines allow users to save space in there individual computer and run very large and intensive applications through these virtual machines. Allowing users to have appropriate tools to complete the task at hand. Virtual machines are incorporated in this project by using the VM to be the bases for how everything is run and the operating system for this project.
+Microsoft Azure is a subscription based application that allows users to create VM also know as virtual machines. These virtual machines allow users to save space in there individual computer and run very large and intensive applications through these virtual machines. Allowing users to have appropriate tools to complete the task at hand. Virtual machines are incorporated in this project by using the VM to be the bases for how everything is run and the operating system for this project\cite{azure}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -503,7 +503,6 @@ Merging new results and cached results is acomplished simply by creating a new S
 At this point we have a DataFrame where each row contains the results of filtering the \textit{xeno-canto} recordings. We could directly view these results by calling \code{collect} on the DataFrame but if we have more operations to perform it is more efficient to keep the data in Spark and offload further processing to the Spark cluster.
 
 As an example of how to do this we created the UDF shown in Listing \ref{lst:spec}.
-\pagebreak
 \begin{lstlisting}[language=Txt, caption={Taking FFTs with Spark}, label={lst:spec}]
 @udf(returnType=ArrayType(DoubleType()))
 def get_magnitude_spectrum( signal, Nfft ):
